@@ -44,10 +44,11 @@ public class AccessRepository {
             Statement statement = sqlConnection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM [Personel]");
             Personel personel;
+            int id = 1;
             while (resultSet.next()) {
                 String name = resultSet.getString(2);
                 String lastName = resultSet.getString(3);
-                personel = new Personel(1, name, lastName);
+                personel = new Personel(id++, name, lastName);
                 result.add(personel);
             }
             return result;
