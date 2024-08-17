@@ -1,0 +1,24 @@
+services:
+  db:
+    build: .
+    restart: unless-stopped
+    container_name: db-service
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      backend:
+        ipv4_address: 192.168.2.3
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "8080"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+networks:
+  backend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.2.0/24
+          gateway: 192.168.2.1
