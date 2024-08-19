@@ -24,9 +24,9 @@ public class DataSourceConfiguration {
     public void dataSourceUCanAccess() throws SQLException, ClassNotFoundException {
         Connection connection = getSqlConnection();
         Statement s = connection.createStatement();
-        ResultSet resultSet = s.executeQuery("SELECT * FROM [Personel]");
+        ResultSet resultSet = s.executeQuery("SELECT * FROM [kursmain]");
         while (resultSet.next()) {
-            LOG.info("{} {} {} {} {}", resultSet.getRow(), resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4));
+            LOG.info("{} {} {} {} {} {} {} {} {}", resultSet.getRow(), resultSet.getString("CertNo"), resultSet.getString("Name"), resultSet.getString("Surname"), resultSet.getDate("DateBegine"), resultSet.getDate("DateEnd"), resultSet.getString("MrMs"), resultSet.getString("CertType"), resultSet.getString("CourseNo"));
         }
         s.closeOnCompletion();
         connection.close();
