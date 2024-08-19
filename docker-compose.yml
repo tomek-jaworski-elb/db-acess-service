@@ -7,7 +7,7 @@ services:
       - ./logs:/app/logs
       - ./db:/app/db
     ports:
-      - "8080:8080"
+      - "8085:8085"
 #    networks:
 #      backend:
 #        ipv4_address: 192.168.2.3
