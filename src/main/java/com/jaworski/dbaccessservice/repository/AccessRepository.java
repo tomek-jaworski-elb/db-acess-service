@@ -1,20 +1,17 @@
 package com.jaworski.dbaccessservice.repository;
 
 import com.jaworski.dbaccessservice.configuration.DataSourceConfiguration;
-import com.jaworski.dbaccessservice.dto.Personel;
+import com.jaworski.dbaccessservice.dto.Student;
+import com.jaworski.dbaccessservice.dto.TableKursmain;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class AccessRepository {
@@ -27,29 +24,26 @@ public class AccessRepository {
         this.dataSourceConfiguration = dataSourceConfiguration;
     }
 
-
-    public List<Map<String, Object>> getSomeData() {
-        try {
-            dataSourceConfiguration.dataSourceUCanAccess();
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-      return Collections.emptyList();
-    }
-
-    public Collection<Personel> getPersonel() {
-        List<Personel> result = new ArrayList<>();
+    public Collection<Student> getStudents() {
+        List<Student> result = new ArrayList<>();
         try {
             Connection sqlConnection = dataSourceConfiguration.getSqlConnection();
-            Statement statement = sqlConnection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM [Personel]");
-            Personel personel;
-            int id = 1;
+            ResultSet resultSet;
+            try (Statement statement = sqlConnection.createStatement()) {
+                resultSet = statement.executeQuery("SELECT * FROM [" + TableKursmain.TABLE_NAME + "]");
+            }
             while (resultSet.next()) {
-                String name = resultSet.getString(2);
-                String lastName = resultSet.getString(3);
-                personel = new Personel(id++, name, lastName);
-                result.add(personel);
+                int certNo = resultSet.getInt(TableKursmain.CERT_NO);
+                String name = resultSet.getString(TableKursmain.FIRST_NAME);
+                String surname = resultSet.getString(TableKursmain.SURNAME);
+                Date dateBegine = resultSet.getDate(TableKursmain.DATE_BEGINE);
+                Date dateEnd = resultSet.getDate(TableKursmain.DATE_END);
+                String mrMs = resultSet.getString(TableKursmain.MR_MS);
+                String certType = resultSet.getString(TableKursmain.CERT_TYPE);
+                String courseNo = resultSet.getString(TableKursmain.COURSE_NO);
+
+                Student student = new Student(certNo, name, surname, courseNo, dateBegine, dateEnd, mrMs, certType);
+                result.add(student);
             }
             return result;
 

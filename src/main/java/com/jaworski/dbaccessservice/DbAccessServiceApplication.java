@@ -10,8 +10,7 @@ public class DbAccessServiceApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(DbAccessServiceApplication.class, args);
-        AccessRepository accessRepository = context.getBean(AccessRepository.class);
-        accessRepository.getSomeData();
+        context.getBean(AccessRepository.class);
     }
 
 }
