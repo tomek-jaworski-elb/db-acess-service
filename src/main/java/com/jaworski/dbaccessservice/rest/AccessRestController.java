@@ -1,6 +1,6 @@
 package com.jaworski.dbaccessservice.rest;
 
-import com.jaworski.dbaccessservice.dto.Personel;
+import com.jaworski.dbaccessservice.dto.Student;
 import com.jaworski.dbaccessservice.service.PersonelService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +27,7 @@ public class AccessRestController {
     }
 
     @GetMapping(path = "/names")
-    public ResponseEntity<Collection<Personel>> getNames() {
+    public ResponseEntity<Collection<Student>> getNames() {
         return ResponseEntity.of(personelService.getNames());
     }
 

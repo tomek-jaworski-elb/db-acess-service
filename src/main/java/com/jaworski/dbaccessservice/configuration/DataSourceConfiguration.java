@@ -7,9 +7,7 @@ import org.springframework.stereotype.Component;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 @Component
 public class DataSourceConfiguration {
@@ -19,17 +17,6 @@ public class DataSourceConfiguration {
 
     public DataSourceConfiguration(AppResources appResources) {
         this.appResources = appResources;
-    }
-
-    public void dataSourceUCanAccess() throws SQLException, ClassNotFoundException {
-        Connection connection = getSqlConnection();
-        Statement s = connection.createStatement();
-        ResultSet resultSet = s.executeQuery("SELECT * FROM [Personel]");
-        while (resultSet.next()) {
-            LOG.info("{} {} {} {} {}", resultSet.getRow(), resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4));
-        }
-        s.closeOnCompletion();
-        connection.close();
     }
 
     public Connection getSqlConnection() throws SQLException, ClassNotFoundException {
@@ -42,7 +29,7 @@ public class DataSourceConfiguration {
     private Path getPathToFileDB() {
         Path path = Path.of(".");
         String fileDbPath = appResources.getFileDbPath()
-                .orElseThrow(() -> new RuntimeException("Resource not found: file.db"));
+                .orElseThrow(() -> new RuntimeException("Resource not found: " + appResources.getFileDbPath()));
         path = path.resolve(fileDbPath);
         if (!path.toFile().isFile()) {
             LOG.error("File not found: {}", path);

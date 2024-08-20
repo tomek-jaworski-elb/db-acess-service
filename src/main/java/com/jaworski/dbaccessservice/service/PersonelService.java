@@ -1,6 +1,6 @@
 package com.jaworski.dbaccessservice.service;
 
-import com.jaworski.dbaccessservice.dto.Personel;
+import com.jaworski.dbaccessservice.dto.Student;
 import com.jaworski.dbaccessservice.repository.AccessRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +16,9 @@ public class PersonelService {
         this.accessRepository = accessRepository;
     }
 
-    public Optional<Collection<Personel>> getNames() {
-        Collection<Personel> personel;
-        personel = accessRepository.getPersonel();
-        return Optional.ofNullable(personel);
+    public Optional<Collection<Student>> getNames() {
+        Collection<Student> student;
+        student = accessRepository.getStudents();
+        return Optional.ofNullable(student);
     }
 }
