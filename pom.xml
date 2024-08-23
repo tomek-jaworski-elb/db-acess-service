@@ -12,7 +12,7 @@
     <artifactId>db-access-service</artifactId>
     <version>1.0</version>
     <name>db-access-service</name>
-    <description>db-access-service</description>
+    <description>Simple DB Access Service</description>
     <url/>
     <licenses>
         <license/>
