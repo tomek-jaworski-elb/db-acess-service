@@ -8,20 +8,24 @@ services:
       - ./db:/app/db
     ports:
       - "8085:8085"
-#    networks:
-#      backend:
-#        ipv4_address: 192.168.2.3
+    networks:
+      backend:
+        ipv4_address: 192.168.2.4
     healthcheck:
-      test: ["CMD", "nc", "-z", "localhost", "8080"]
+      test: ["CMD", "nc", "-z", "192.168.2.4", "8085"]
       interval: 5s
       timeout: 5s
       retries: 3
       start_period: 10s
 
-#networks:
-#  backend:
-#    driver: bridge
-#    ipam:
-#      config:
-#        - subnet: 192.168.2.0/24
-#          gateway: 192.168.2.1
+networks:
+  backend:
+    name: backend
+    attachable: true
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      config:
+        - subnet: 192.168.2.0/24
+          gateway: 192.168.2.1
