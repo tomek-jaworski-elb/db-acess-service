@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.jaworski</groupId>
     <artifactId>db-access-service</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <name>db-access-service</name>
     <description>Simple DB Access Service</description>
     <url/>
