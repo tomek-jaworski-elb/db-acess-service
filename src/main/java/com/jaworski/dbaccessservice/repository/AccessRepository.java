@@ -10,12 +10,19 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 @Repository
 public class AccessRepository {
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+    private static final String LATEST_DATE = "LatestDate";
 
     private final DataSourceConfiguration dataSourceConfiguration;
 
@@ -35,19 +42,32 @@ public class AccessRepository {
     public Collection<Student> getStudentsByWeek(int week) throws SQLException, ClassNotFoundException {
         Connection sqlConnection = dataSourceConfiguration.getSqlConnection();
         Statement statement = sqlConnection.createStatement();
-        ResultSet set = statement.executeQuery("SELECT MAX(" + TableKursmain.DATE_END + ") AS LatestDate FROM [" +
+        ResultSet set = statement.executeQuery("SELECT MAX(" + TableKursmain.DATE_END + ") AS " + LATEST_DATE + " FROM [" +
                 TableKursmain.TABLE_NAME + "]");
-        String latestDate = null;
-        while (set.next()) {
-            latestDate = set.getString("LatestDate");
-        }
-        if (latestDate == null) {
+        Optional<String> mondayDate = getMondayDate(set);
+
+
+        if (mondayDate.isEmpty()) {
             return Collections.emptyList();
+        } else {
+            String latestDate = mondayDate.get();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM [" + TableKursmain.TABLE_NAME + "] WHERE [" +
+                    TableKursmain.DATE_END + "] >= '" + latestDate + "'" + "ORDER BY [" + TableKursmain.CERT_NO + "]" + " DESC");
+            statement.close();
+            return getResultCollection(resultSet);
         }
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM [" + TableKursmain.TABLE_NAME + "] WHERE [" +
-                TableKursmain.DATE_END + "] = '" + latestDate + "'" + "ORDER BY [" + TableKursmain.CERT_NO + "]" + " DESC");
-        statement.close();
-        return getResultCollection(resultSet);
+    }
+
+    private Optional<String> getMondayDate(ResultSet set) throws SQLException {
+        if (set.next()) {
+            String latestDate = set.getString(LATEST_DATE);
+            LocalDateTime parse = LocalDateTime.parse(latestDate, DATE_TIME_FORMATTER);
+            DayOfWeek dayOfWeek = parse.getDayOfWeek();
+            int value = dayOfWeek.getValue();
+            LocalDateTime monday = parse.minusDays(value - 1);
+            return Optional.of(monday.format(DATE_TIME_FORMATTER));
+        }
+        return Optional.empty();
     }
 
     private static Collection<Student> getResultCollection(ResultSet resultSet) throws SQLException {

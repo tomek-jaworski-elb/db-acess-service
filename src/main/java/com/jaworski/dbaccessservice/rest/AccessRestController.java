@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.Collections;
 
 @RestController()
 @RequestMapping(path = "/api")
