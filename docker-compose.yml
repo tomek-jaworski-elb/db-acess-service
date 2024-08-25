@@ -2,7 +2,7 @@ services:
   db:
     build: .
     restart: unless-stopped
-    container_name: db-service
+    container_name: db-access-service
     volumes:
       - ./logs:/app/logs
       - ./db:/app/db
