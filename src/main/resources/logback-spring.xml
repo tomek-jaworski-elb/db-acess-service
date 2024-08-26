@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration info="false">
+
+    <!-- Log only SQL queries (jdbc.sqlonly logger) -->
+    <logger name="jdbc.sqlonly" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="SAVE-TO-FILE"/>
+    </logger>
+
+    <!-- Disable other loggers (if necessary) -->
+<!--    <logger name="jdbc.audit" level="OFF"/>-->
+<!--    <logger name="jdbc.resultset" level="OFF"/>-->
+<!--    <logger name="jdbc.connection" level="OFF"/>-->
+<!--    <logger name="jdbc.sqltiming" level="OFF"/>-->
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>

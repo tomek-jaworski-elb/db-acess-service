@@ -23,7 +23,10 @@ public class DataSourceConfiguration {
         System.setProperty("hsqldb.method_class_names", "net.ucanaccess.converters.*"); // see http://hsqldb.org/doc/2.0/guide/sqlroutines-chapt.html#src_jrt_access_control
         Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
         Path path = getPathToFileDB();
-        return DriverManager.getConnection("jdbc:ucanaccess://" + path);
+        Connection connection = DriverManager.getConnection("jdbc:ucanaccess://" + path);
+        // wrap the connection with log4jdbc
+        connection = new net.sf.log4jdbc.ConnectionSpy(connection);
+        return connection;
     }
 
     private Path getPathToFileDB() {

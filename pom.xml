@@ -30,6 +30,7 @@
         <java.version>17</java.version>
         <ucanaccess.version>5.0.1</ucanaccess.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
+        <log4jdbc.version>1.2</log4jdbc.version>
     </properties>
     <dependencies>
         <dependency>
@@ -61,6 +62,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.log4jdbc</groupId>
+            <artifactId>log4jdbc</artifactId>
+            <version>${log4jdbc.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
