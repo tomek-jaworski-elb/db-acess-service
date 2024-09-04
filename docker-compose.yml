@@ -3,6 +3,8 @@ services:
     build: .
     restart: unless-stopped
     container_name: db-access-service
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xms256m -Xmx512m
     volumes:
       - ./logs:/app/logs
       - ./db:/app/db
