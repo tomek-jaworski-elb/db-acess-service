@@ -1,6 +1,6 @@
 package com.jaworski.dbaccessservice.rest;
 
-import com.jaworski.dbaccessservice.configuration.AppResources;
+import com.jaworski.dbaccessservice.resources.AppResources;
 import com.jaworski.dbaccessservice.dto.Student;
 import com.jaworski.dbaccessservice.dto.UserRestService;
 import org.junit.jupiter.api.BeforeEach;

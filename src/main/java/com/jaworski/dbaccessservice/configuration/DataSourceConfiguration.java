@@ -1,5 +1,6 @@
 package com.jaworski.dbaccessservice.configuration;
 
+import com.jaworski.dbaccessservice.resources.AppResources;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;

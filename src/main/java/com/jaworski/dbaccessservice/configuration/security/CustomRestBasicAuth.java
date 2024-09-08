@@ -1,6 +1,6 @@
 package com.jaworski.dbaccessservice.configuration.security;
 
-import com.jaworski.dbaccessservice.configuration.AppResources;
+import com.jaworski.dbaccessservice.resources.AppResources;
 import com.jaworski.dbaccessservice.dto.UserRestService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
