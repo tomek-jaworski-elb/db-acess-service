@@ -30,6 +30,7 @@
         <java.version>17</java.version>
         <ucanaccess.version>5.0.1</ucanaccess.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
+        <keytool-maven-plugin.version>1.7</keytool-maven-plugin.version>
     </properties>
     <dependencies>
         <dependency>
@@ -69,6 +70,29 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>keytool-maven-plugin</artifactId>
+                <version>${keytool-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generateKeyPair</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <keystore>${project.basedir}/cert/server.p12</keystore>
+                    <storepass>password</storepass>
+                    <dname>cn=www.portilawa.com, ou=None, L=None, ST=None, o=FBZ</dname>
+                    <skipIfExist>true</skipIfExist>
+                    <storetype>PKCS12</storetype>
+                    <validity>365</validity>
+                    <keyalg>RSA</keyalg>
+                    <keysize>2048</keysize>
+                </configuration>
             </plugin>
         </plugins>
     </build>
