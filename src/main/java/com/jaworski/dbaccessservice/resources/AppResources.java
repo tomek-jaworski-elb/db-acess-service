@@ -1,4 +1,4 @@
-package com.jaworski.dbaccessservice.configuration;
+package com.jaworski.dbaccessservice.resources;
 
 import com.jaworski.dbaccessservice.dto.UserRestService;
 import org.apache.commons.lang3.StringUtils;
