@@ -85,7 +85,7 @@
                 </executions>
                 <configuration>
                     <keystore>${project.basedir}/cert/server.p12</keystore>
-                    <storepass>Kamionka!11</storepass>
+                    <storepass>password</storepass>
                     <dname>cn=www.portilawa.com, ou=None, L=None, ST=None, o=FBZ</dname>
                     <skipIfExist>true</skipIfExist>
                     <storetype>PKCS12</storetype>
