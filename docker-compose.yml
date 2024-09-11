@@ -8,6 +8,7 @@ services:
     volumes:
       - ./logs:/app/logs
       - ./db:/app/db
+      - ./cert/server.p12:/app/cert/server.p12
     ports:
       - "8085:8085"
     networks:
