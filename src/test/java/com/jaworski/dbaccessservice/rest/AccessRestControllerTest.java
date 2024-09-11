@@ -27,8 +27,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.web.client.NoOpResponseErrorHandler;
-import org.springframework.web.client.ResponseErrorHandler;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -41,6 +40,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -84,12 +84,10 @@ class AccessRestControllerTest {
 
     private RestTemplate getRestTemplate(UserRestService credentials) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
         HttpComponentsClientHttpRequestFactory requestFactory = getRequestFactory();
-        ResponseErrorHandler errorHandler = new NoOpResponseErrorHandler();
 
         return new RestTemplateBuilder()
                 .requestFactory(() -> requestFactory)
                 .basicAuthentication(credentials.getName(), credentials.getPassword())
-                .errorHandler(errorHandler)
                 .build();
     }
 
@@ -111,18 +109,18 @@ class AccessRestControllerTest {
         UserRestService userRestService = new UserRestService();
         userRestService.setName("admin");
         userRestService.setPassword("wrong");
-        ResponseEntity<String> response = getRestTemplate(userRestService)
-                .getForEntity(httpUrl.pathSegment("hello").toUriString(), String.class);
-        assertNotNull(response);
-        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        HttpClientErrorException httpClientErrorException = assertThrows(HttpClientErrorException.class, () -> getRestTemplate(userRestService)
+                .getForEntity(httpUrl.pathSegment("hello").toUriString(), String.class));
+        assertEquals(HttpStatus.UNAUTHORIZED, httpClientErrorException.getStatusCode());
     }
 
     @Test
     void getAll_returnsStatusUnauthorized_whenWrongURL() throws Exception {
-        ResponseEntity<String> response = getRestTemplate(resources.getRestServiceCredentials())
-                .getForEntity(httpUrl.build().toUri(), String.class);
-        assertNotNull(response);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+//        ResponseEntity<String> response = getRestTemplate(resources.getRestServiceCredentials())
+//                .getForEntity(httpUrl.build().toUri(), String.class);
+        HttpClientErrorException httpClientErrorException = assertThrows(HttpClientErrorException.class, () -> getRestTemplate(resources.getRestServiceCredentials())
+                .getForEntity(httpUrl.build().toUri(), String.class));
+        assertEquals(HttpStatus.NOT_FOUND, httpClientErrorException.getStatusCode());
     }
 
     @Test
