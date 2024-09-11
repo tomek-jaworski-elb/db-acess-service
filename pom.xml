@@ -31,6 +31,7 @@
         <ucanaccess.version>5.0.1</ucanaccess.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
         <keytool-maven-plugin.version>1.7</keytool-maven-plugin.version>
+        <httpclient5.version>5.3.1</httpclient5.version>
     </properties>
     <dependencies>
         <dependency>
@@ -63,6 +64,18 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>${httpclient5.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
