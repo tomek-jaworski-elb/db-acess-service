@@ -1,8 +1,12 @@
 @echo off
 REM Batch Script to Check Java Version and Run the db-access-service
 
+SET JAR_FILE_VERSION=1.2
+SET JAVA_TOOL_OPTIONS=-Xms256m -Xmx512m
+SET APP_FILE=db-access-service
+
 echo =====================================
-echo Checking for Java installation...
+echo Checking for Java installation ...
 echo =====================================
 java -version
 
@@ -14,18 +18,18 @@ IF %ERRORLEVEL% NEQ 0 (
 )
 
 echo =====================================
-echo Running db-access-service...
+echo Running %APP_FILE%-%JAR_FILE_VERSION% ...
 echo =====================================
-java -jar target/db-access-service-1.1.jar
+java -jar target/%APP_FILE%-%JAR_FILE_VERSION%.jar %JAVA_TOOL_OPTIONS%
 
 IF %ERRORLEVEL% NEQ 0 (
-    echo Error: Failed to start db-access-service.
+    echo Error: Failed to start %APP_FILE%.
     echo Please check the jar file and try again.
     pause
     exit /b 1
 )
 
 echo =====================================
-echo db-access-service is running successfully.
+echo %APP_FILE% is running successfully.
 echo =====================================
 pause
