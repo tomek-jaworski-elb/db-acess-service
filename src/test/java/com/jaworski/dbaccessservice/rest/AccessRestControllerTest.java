@@ -1,5 +1,6 @@
 package com.jaworski.dbaccessservice.rest;
 
+import com.jaworski.dbaccessservice.configuration.DataSourceConfiguration;
 import com.jaworski.dbaccessservice.dto.Student;
 import com.jaworski.dbaccessservice.dto.UserRestService;
 import com.jaworski.dbaccessservice.resources.AppResources;
@@ -19,6 +20,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -31,6 +34,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -50,6 +54,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
+@ExtendWith(SpringExtension.class)
 class AccessRestControllerTest {
 
     private UriComponentsBuilder httpUrl = null;
@@ -60,9 +65,6 @@ class AccessRestControllerTest {
 
     @Mock
     private AppResources resources;
-
-    @Mock
-    private PersonelService personelService;
 
     @LocalServerPort
     private String port;
@@ -119,7 +121,7 @@ class AccessRestControllerTest {
     }
 
     @Test
-    void getHello_returnsStatusUnauthorized_whenWrongCredentials() throws Exception {
+    void getHello_returnsStatusUnauthorized_whenWrongCredentials() {
         UserRestService userRestService = new UserRestService();
         userRestService.setName("admin");
         userRestService.setPassword("wrong");
@@ -137,7 +139,7 @@ class AccessRestControllerTest {
 
     @Test
     @DisplayName("Get all names")
-    @Disabled
+    @Disabled("Needs to be fixed - mock SQLException")
     void getAll_returnsOK_whenValidRequest_names() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
         ResponseEntity<List<Student>> response = getRestTemplate(resources.getRestServiceCredentials())
                 .exchange(httpUrl.pathSegment("names").toUriString(), HttpMethod.GET, null, responseType);
@@ -150,7 +152,7 @@ class AccessRestControllerTest {
     }
 
     @Test
-    @Disabled
+    @Disabled("Needs to be fixed - mock SQLException")
     void getAll_returnsOK_whenValidRequest_name() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
         ResponseEntity<List<Student>> response = getRestTemplate(resources.getRestServiceCredentials())
                 .exchange(httpUrl.pathSegment("names").buildAndExpand("4").toUriString(), HttpMethod.GET, null, new ParameterizedTypeReference<>() {
