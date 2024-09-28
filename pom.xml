@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.jaworski</groupId>
     <artifactId>db-access-service</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <name>db-access-service</name>
     <description>Simple DB Access Service</description>
     <url/>
@@ -30,6 +30,8 @@
         <java.version>17</java.version>
         <ucanaccess.version>5.0.1</ucanaccess.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
+        <keytool-maven-plugin.version>1.7</keytool-maven-plugin.version>
+        <httpclient5.version>5.3.1</httpclient5.version>
     </properties>
     <dependencies>
         <dependency>
@@ -62,6 +64,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>${httpclient5.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -69,6 +78,29 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>keytool-maven-plugin</artifactId>
+                <version>${keytool-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generateKeyPair</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <keystore>${project.basedir}/cert/server.p12</keystore>
+                    <storepass>password</storepass>
+                    <dname>cn=www.portilawa.com, ou=None, L=None, ST=None, o=FBZ</dname>
+                    <skipIfExist>true</skipIfExist>
+                    <storetype>PKCS12</storetype>
+                    <validity>365</validity>
+                    <keyalg>RSA</keyalg>
+                    <keysize>2048</keysize>
+                </configuration>
             </plugin>
         </plugins>
     </build>

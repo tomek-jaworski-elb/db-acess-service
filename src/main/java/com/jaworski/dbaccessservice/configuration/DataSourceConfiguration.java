@@ -14,6 +14,8 @@ import java.sql.SQLException;
 public class DataSourceConfiguration {
 
     private static final Logger LOG = LogManager.getLogger(DataSourceConfiguration.class);
+    private static final String NET_UCANACCESS_JDBC_UCANACCESS_DRIVER = "net.ucanaccess.jdbc.UcanaccessDriver";
+    private static final String JDBC_UCANACCESS = "jdbc:ucanaccess://";
     private final AppResources appResources;
 
     public DataSourceConfiguration(AppResources appResources) {
@@ -22,9 +24,9 @@ public class DataSourceConfiguration {
 
     public Connection getSqlConnection() throws SQLException, ClassNotFoundException {
         System.setProperty("hsqldb.method_class_names", "net.ucanaccess.converters.*"); // see http://hsqldb.org/doc/2.0/guide/sqlroutines-chapt.html#src_jrt_access_control
-        Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+        Class.forName(NET_UCANACCESS_JDBC_UCANACCESS_DRIVER);
         Path path = getPathToFileDB();
-        return DriverManager.getConnection("jdbc:ucanaccess://" + path);
+        return DriverManager.getConnection(JDBC_UCANACCESS + path + ";memory=false");
     }
 
     private Path getPathToFileDB() {
